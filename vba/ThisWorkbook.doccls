@@ -1,0 +1,37 @@
+﻿'@Folder "RSAPRigidLinks.z_Sheets"
+Option Explicit
+
+Private Const FIRST_SHEET As String = "Nodes-Plane"
+Private Const SECOND_SHEET As String = "Bars-Plane"
+Private Const THIRD_SHEET As String = "Bars-Line"
+
+Private Sub Workbook_Open()
+    On Error GoTo ErrorHandler
+    Application.ScreenUpdating = False
+    
+    Dim ws As Worksheet
+    Set ws = ActiveSheet
+    Const ZOOM_LEVEL As Double = 205
+    Const TARGET_CELL As String = "A1"
+    
+    Dim sheetName As Variant
+    
+    For Each sheetName In Array(FIRST_SHEET, SECOND_SHEET, THIRD_SHEET)
+        With ThisWorkbook.Sheets(sheetName)
+            .Activate
+            .Range(TARGET_CELL).Select
+            ActiveWindow.DisplayGridlines = False
+            ActiveWindow.Zoom = ZOOM_LEVEL
+        End With
+    Next sheetName
+        
+    ws.Activate
+
+Cleanup:
+    Application.ScreenUpdating = True
+    Exit Sub
+
+ErrorHandler:
+    MsgBox "Error!" & Err.Description
+    Resume Cleanup
+End Sub
